@@ -1,6 +1,5 @@
 # MD5 light
 `MD5light` is a small shell and web service for computing `MD5` of a file on the Internet.
-(Test task for BostonGene.)
 
 ## Installation
 1. Install project dependencies 
