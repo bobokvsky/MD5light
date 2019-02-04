@@ -48,7 +48,7 @@ class MD5Light(cmd2.Cmd):
         if self.is_SMTP_connected():
             self.quit_SMTP()
 
-        self.poutput("Print Start SMTP sessionfollowing:")
+        self.poutput("Input following:")
         host = input("SMTP server host: ")
         username = input('Username: ')
         password = getpass.getpass()
