@@ -10,6 +10,7 @@ import solver_tasks
 PORT = 8000
 LOG_FILE_NAME = "log_messages_server.txt"
 
+
 class StoreHandler(http.server.BaseHTTPRequestHandler):
 
     solver_tasks = None
@@ -27,7 +28,7 @@ class StoreHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(contents.encode())
         self.wfile.flush()
-    
+
     def do_GET(self):
         parsed_path = urlparse.urlparse(self.path)
         action = parsed_path.path
@@ -37,7 +38,7 @@ class StoreHandler(http.server.BaseHTTPRequestHandler):
                 contents = []
                 for task_id in params["id"]:
                     contents.append(self.solver_tasks.get_task(task_id))
-                
+
                 self.send_response2(200., "OK", str(contents))
             else:
                 self.send_response2(400., "Bad ID params", "")
@@ -53,10 +54,10 @@ class StoreHandler(http.server.BaseHTTPRequestHandler):
                 if not ("email" in params and len(params["email"]) > 1):
                     if "email" not in params:
                         params["email"] = [None]
-                    
+
                     for url, email in zip(params["url"], params["email"]):
                         answer = self.solver_tasks.add_task(url, email)
-                    
+
                     self.send_response2(200., "OK", answer)
                 else:
                     self.send_response2(400., "Email invalid", "Email invalid")
@@ -68,14 +69,14 @@ class StoreHandler(http.server.BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         with open(LOG_FILE_NAME, "a") as f:
             f.write("%s - - [%s] %s\n" %
-                            (self.address_string(),
-                            self.log_date_time_string(),
-                            format%args))
+                    (self.address_string(), self.log_date_time_string(),
+                        format % args))
+
 
 class SimpleServer():
     def __init__(self, port=PORT):
         self.httpd = socketserver.TCPServer(("", PORT), StoreHandler)
-        
+
         self.is_serving = False
         self.lock = threading.Lock()
 
@@ -97,7 +98,7 @@ class SimpleServer():
             self.thread.start()
 
             handler = self.httpd.RequestHandlerClass
-            if handler.get_tasks(handler) == None:
+            if handler.get_tasks(handler) is None:
                 handler.set_tasks(handler, tasks)
             return "Server run."
         else:
@@ -112,7 +113,6 @@ class SimpleServer():
             self.set_is_serving(False)
             self.thread.join()
 
-            #self.httpd.RequestHandlerClass.set_tasks(None)
             return "Server shut down."
         else:
             return "Server is already shut down."

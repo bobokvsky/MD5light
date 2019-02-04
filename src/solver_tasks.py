@@ -10,6 +10,7 @@ from email.message import EmailMessage
 NUM_OF_DOWNLOAD_WORKERS = 5  # for downloading the files
 CHUNK_SIZE = 1024  # for response.iter_content()
 
+
 class TaskDao:
     """DataBase of tasks"""
 
@@ -22,7 +23,7 @@ class TaskDao:
         res = self.tasks[key]
         self.lock.release()
         return res
-    
+
     def __setitem__(self, key, value):
         self.lock.acquire()
         self.tasks[key] = value
@@ -67,12 +68,14 @@ class SolverTasks:
 
         task_id = str(uuid.uuid4())
         self.tasks[task_id] = task
-        
+
         self.queue.put(task_id)
         if threading.activeCount() < NUM_OF_DOWNLOAD_WORKERS:
-            worker = threading.Thread(target=self.get_md5, args=(task_id, url, email, ))
+            worker = threading.Thread(
+                target=self.get_md5, args=(task_id, url, email, )
+                )
             worker.start()
-        
+
         return "{'id': '" + task_id + "'}"
 
     def get_task(self, task_id) -> str:
@@ -87,10 +90,10 @@ class SolverTasks:
     def get_md5(self, task_id, url, email):
         while not self.queue.empty():
             task_id = self.queue.get()
-            
+
             is_success = False
             is_responsed = False
-            
+
             md5 = hashlib.md5()
             try:
                 response = requests.get(url, stream=True)
@@ -113,15 +116,15 @@ class SolverTasks:
                     self.tasks[task_id]["status_code"] = response.status_code
                 else:
                     self.tasks[task_id]["status_code"] = "invalid url"
-            
+
             SMTP, sender = self.get_SMTP_and_sender()
-            if SMTP != None and sender != None:
+            if SMTP is not None and sender is not None:
                 msg = EmailMessage()
                 msg['Subject'] = "Result of task {'%s'}" % task_id
                 msg['From'] = sender
                 msg['To'] = email
                 msg.set_content(str(self.tasks[task_id]))
-                
+
                 self.lock.acquire()
                 SMTP.send_message(msg)
                 self.lock.release()
