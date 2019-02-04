@@ -96,11 +96,11 @@ When the server in running from shell by command `run`, you can use `GET` and `P
 #### GET to retrieve task status and md5 hash
 When task is running:
 ```shell
->>>  curl -X GET http://localhost:8000/check?id=5a52c0cd-5047-4a44-8ce3-7c8afd2fe807
+>>> curl -X GET http://localhost:8000/check?id=5a52c0cd-5047-4a44-8ce3-7c8afd2fe807
 ["{'url': 'https://speed.hetzner.de/100MB.bin', 'md5': None, 'status': 'running'}"]
 ```
 When task is done:
 ```shell
->>>  curl -X GET http://localhost:8000/check?id=5a52c0cd-5047-4a44-8ce3-7c8afd2fe807
+>>> curl -X GET http://localhost:8000/check?id=5a52c0cd-5047-4a44-8ce3-7c8afd2fe807
 ["{'url': 'https://speed.hetzner.de/100MB.bin', 'md5': '2f282b84e7e608d5852449ed940bfc51', 'status': 'done', 'status_code': 200}"]
 ```
