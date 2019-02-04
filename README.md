@@ -3,7 +3,7 @@
 (Test task for BostonGene.)
 
 ## Installation
-1. Install project dependencies
+1. Install project dependencies 
 ```shell
 pip install cmd2
 pip install requests
@@ -22,6 +22,8 @@ Welcome to the MD5Light! Type help or ? to list commands.
 ```
 
 ##### Available commands:
+`add`, `get`, `getall`, `run`, `shutdown`, `startSMTP`, `stopSMTP`, `quit`
+
 `add <url> (--email <email>)`  - add task to count md5 hash of file from `<url>`. If email is specified and SMTD session is active, the task will send email with results. 
 ```shell
 >>> (MD5Light) add https://upload.wikimedia.org/wikipedia/en/a/a9/Example.jpg --email to@example.com
@@ -46,16 +48,12 @@ Welcome to the MD5Light! Type help or ? to list commands.
 ```shell
 >>> (MD5Light) run
 Server run.
->>> (MD5Light) run
-Server is already running.
 ```
 
 `shutdown`  - shutdown the server.
 ```shell
 >>> (MD5Light) shutdown
 Server shut down.
->>> (MD5Light) shutdown
-Server is already shut down.
 ```
 
 `startSMTP` - Start SMTP session for sending emails. Note that `MD5light` uses only port `587` for SMTP (TCP session). If accepted, then the command `add` with specified email will send mail.
@@ -69,13 +67,11 @@ Print following:
 (235, b'2.7.0 Accepted')
 ```
 
-`quitSMTP` - Stop SMTP session.
+`stopSMTP` - Stop SMTP session.
 ```shell
 >>> (MD5Light) quitSMTP
 Quiting from SMTP session...
 Done.
->>> (MD5Light) quitSMTP
-SMTP session is not turned on.
 ```
 
 `quit` - Quit from shell. This will turn off server and stop SMTP session.
