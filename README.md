@@ -94,7 +94,6 @@ When the server in running from shell by command `run`, you can use `GET` and `P
 ```
 
 #### GET to retrieve task status and md5 hash
-(Note that the mail will be sent when SMTP session is active.)
 When task is running:
 ```shell
 >>>  curl -X GET http://localhost:8000/check?id=5a52c0cd-5047-4a44-8ce3-7c8afd2fe807
